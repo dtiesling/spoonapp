@@ -12,21 +12,21 @@ import CoreMotion
 
 class HomeViewController: UIViewController {
 
-    @IBOutlet var stepLabel : UILabel
-    @IBOutlet var homeView : UIView
-    @IBOutlet var countLabel : UILabel
-    @IBOutlet var fromLabel : UILabel
-    @IBOutlet var toLabel : UILabel
-    @IBOutlet var stepLimitLabel : UILabel
-    @IBOutlet var stepStepper : UIStepper
-    @IBOutlet var stepsTakenLabel : UILabel
-    @IBOutlet var progress : UIProgressView
-    @IBOutlet var sleepSwitch : UISwitch
-    @IBOutlet var napLabel: UILabel
-    @IBOutlet var toolBar : UIToolbar
-    @IBOutlet var sleepPointLabel : UILabel
-    @IBOutlet var sleepPoints : UILabel
-    @IBOutlet var sleepSpinner : UIActivityIndicatorView
+    @IBOutlet var stepLabel : UILabel!
+    @IBOutlet var homeView : UIView!
+    @IBOutlet var countLabel : UILabel!
+    @IBOutlet var fromLabel : UILabel!
+    @IBOutlet var toLabel : UILabel!
+    @IBOutlet var stepLimitLabel : UILabel!
+    @IBOutlet var stepStepper : UIStepper!
+    @IBOutlet var stepsTakenLabel : UILabel!
+    @IBOutlet var progress : UIProgressView!
+    @IBOutlet var sleepSwitch : UISwitch!
+    @IBOutlet var napLabel: UILabel!
+    @IBOutlet var toolBar : UIToolbar!
+    @IBOutlet var sleepPointLabel : UILabel!
+    @IBOutlet var sleepPoints : UILabel!
+    @IBOutlet var sleepSpinner : UIActivityIndicatorView!
     var stepTimer: NSTimer? = nil
     var sleepTimer: NSTimer? = nil
     var defaults = NSUserDefaults.standardUserDefaults()
@@ -50,14 +50,14 @@ class HomeViewController: UIViewController {
     }
 
     @IBAction func stepperChanged(sender : UIStepper) {
-        self.stepLimitLabel.text = String(self.stepStepper.value)
+        self.stepLimitLabel.text = String(self.stepStepper.value.description)
         self.defaults.setDouble(self.stepStepper.value, forKey: "stepLimit")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         updateNapLabel()
-        self.navigationController.navigationBarHidden = true
+        //self.navigationController?.navigationBarHidden = true
         self.sleepPoints.text = "0"
         var stepLimit = self.defaults.doubleForKey("stepLimit")
         if stepLimit > 0 {
@@ -66,7 +66,7 @@ class HomeViewController: UIViewController {
         else {
             self.stepStepper.value = 7000
         }
-        self.stepLimitLabel.text = String(self.stepStepper.value)
+        self.stepLimitLabel.text = String(self.stepStepper.value.description)
         updateSteps()
         startTimer()
     }
@@ -89,7 +89,6 @@ class HomeViewController: UIViewController {
         var to = NSDate()
         self.fromLabel.text = from.descriptionWithLocale(NSLocale.currentLocale())
         self.toLabel.text = to.descriptionWithLocale(NSLocale.currentLocale())
-        self.countLabel.text = String(CMStepCounter.isStepCountingAvailable())
         var counter = CMStepCounter()
         counter.queryStepCountStartingFrom(from, to:to, toQueue:NSOperationQueue.currentQueue(), withHandler:stepHandler)
     }
@@ -133,7 +132,7 @@ class HomeViewController: UIViewController {
                 return
             }
         }
-        var curNapPoints = self.sleepPoints.text.toInt()
+        var curNapPoints = self.sleepPoints.text!.toInt()
         self.sleepPoints.text = String(curNapPoints! + 1)
         self.addNapPoints(1)
         self.updateNapLabel()
@@ -141,7 +140,7 @@ class HomeViewController: UIViewController {
     
     func getNapKey () -> String {
         // Returns the key for the defaults dict that stores today's nap  points.
-        return today().descriptionWithLocale(NSLocale.currentLocale()) + "_nap"
+        return today().descriptionWithLocale(NSLocale.currentLocale())! + "_nap"
     }
     
     func getNapPoints () -> Int {
@@ -165,7 +164,7 @@ class HomeViewController: UIViewController {
         NSLog("sending note")
 //        if self.notificationPercentage < percentage {
             var note = UILocalNotification()
-            note.alertBody = "Slow down. You only have " + self.stepLabel.text + " steps left."
+            note.alertBody = "Slow down. You only have " + self.stepLabel.text! + " steps left."
             let app = UIApplication.sharedApplication()
              self.notificationPercentage = percentage
 //        }
