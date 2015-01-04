@@ -193,12 +193,11 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" usesAttributedText="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zF9-mh-2aF">
-                                <rect key="frame" x="20" y="116" width="280" height="402"/>
+                                <rect key="frame" x="20" y="116" width="280" height="414"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <attributedString key="attributedText">
                                     <fragment>
-                                        <string key="content">Spoon Counter is based on the Spoon Theory by Christine Miserandino.  http://www.butyoudontlooksick.com 
-Each day Spoon Counter resets with a given number of spoons. One spoon is roughly equivalent to 100 steps. All you have to do is keep your phone in your pocket and Spoon Counter will help you avoid using your "spoons" too quickly.</string>
+                                        <string key="content">Spoon Counter is designed to help those with illnesses that result in chronic fatigue ration their daily activity. Each day Spoon Counter starts with a given number of "spoons". One "spoon" is roughly equivalent to 100 steps.   All you have to do is keep your phone in your pocket and Spoon Counter will help you avoid using your "spoons" too quickly.  Spoon Counter is based on the Spoon Theory by Christine Miserandino. For more information visit her site below.  http://www.butyoudontlooksick.com</string>
                                         <attributes>
                                             <font key="NSFont" size="14" name="HelveticaNeue"/>
                                             <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" paragraphSpacingBefore="1" lineHeightMultiple="1.5"/>
