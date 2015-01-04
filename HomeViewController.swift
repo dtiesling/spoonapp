@@ -18,7 +18,7 @@ class HomeViewController: UIViewController {
     @IBOutlet var fromLabel : UILabel!
     @IBOutlet var toLabel : UILabel!
     @IBOutlet var stepLimitLabel : UILabel!
-    @IBOutlet var stepStepper : UIStepper!
+    @IBOutlet weak var spoonStepper: UIStepper!
     @IBOutlet var stepsTakenLabel : UILabel!
     @IBOutlet var progress : UIProgressView!
     @IBOutlet var sleepSwitch : UISwitch!
@@ -32,7 +32,8 @@ class HomeViewController: UIViewController {
     var defaults = NSUserDefaults.standardUserDefaults()
     let napInterval : Double = 300
     var notificationPercentage : CFloat = 0
-
+    var spoonRatio = 100
+    
     @IBAction func sleepSwitchChanged() {
         if self.sleepSwitch.on {
             self.sleepPoints.text = "0"
@@ -50,23 +51,29 @@ class HomeViewController: UIViewController {
     }
 
     @IBAction func stepperChanged(sender : UIStepper) {
-        self.stepLimitLabel.text = String(self.stepStepper.value.description)
-        self.defaults.setDouble(self.stepStepper.value, forKey: "stepLimit")
+        self.stepLimitLabel.text = String(self.spoonStepper.value.description)
+        self.defaults.setDouble(self.spoonStepper.value, forKey: "spoonLimit")
+        updateSteps()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        updateNapLabel()
-        //self.navigationController?.navigationBarHidden = true
-        self.sleepPoints.text = "0"
-        var stepLimit = self.defaults.doubleForKey("stepLimit")
-        if stepLimit > 0 {
-            self.stepStepper.value = stepLimit
+        
+        // Hide sleep switch until next release.
+        //updateNapLabel()
+        self.sleepSwitch.hidden = true
+        self.sleepPoints.hidden = true
+        self.napLabel.hidden = true
+        //self.sleepPoints.text = "0"
+        
+        var spoonLimit = self.defaults.doubleForKey("spoonLimit")
+        if spoonLimit > 0 {
+            self.spoonStepper.value = spoonLimit
         }
         else {
-            self.stepStepper.value = 7000
+            self.spoonStepper.value = 70
         }
-        self.stepLimitLabel.text = String(self.stepStepper.value.description)
+        self.stepLimitLabel.text = String(self.spoonStepper.value.description)
         updateSteps()
         startTimer()
     }
@@ -103,8 +110,8 @@ class HomeViewController: UIViewController {
     }
     
     func stepHandler (steps: Int, error: NSError!) -> Void {
-        self.stepsTakenLabel.text = String(steps)
-        var total: Int = Int(self.stepStepper.value) + self.getNapPoints()
+        self.stepsTakenLabel.text = String(steps/spoonRatio)
+        var total: Int = Int(self.spoonStepper.value)*spoonRatio + self.getNapPoints()
         var percentage: CFloat = Float(steps)/Float(total)
         if percentage > 0.9 {
             self.sendNotificaton(percentage)
@@ -122,7 +129,7 @@ class HomeViewController: UIViewController {
             self.progress.trackTintColor = UIColor.greenColor()
         }
         self.progress.setProgress(percentage, animated:true)
-        self.stepLabel.text = String(Int(total) - steps)
+        self.stepLabel.text = String((Int(total) - steps)/spoonRatio)
     }
     
     func napHandler (activities:[AnyObject]!, error:NSError!) {
